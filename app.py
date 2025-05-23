@@ -6,8 +6,9 @@ import cv2
 import pandas as pd
 import io
 
-model = YOLO(r"C:\Users\zz-xy\OneDrive\Desktop\object detection\training\weights\best.pt")
+# model = YOLO(r"C:\Users\zz-xy\OneDrive\Desktop\object detection\training\weights\best.pt")
 # model = YOLO(r"C:\Users\zz-xy\Downloads\best.pt")
+YOLO("best.pt")
 
 st.set_page_config(page_title="YOLOv8 Object Detection", layout="centered")
 st.title("YOLOv8 Object Detection")
