@@ -6,7 +6,7 @@ from ultralytics import YOLO
 import ffmpeg
 import time
 
-model = YOLO("../training/weights/best.pt")
+model = YOLO("training/weights/best.pt")
 
 def detect_vid(video_bytes, progress_callback=None):
     iop_path = "iop.mp4"
