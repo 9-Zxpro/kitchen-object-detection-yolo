@@ -3,8 +3,7 @@ from PIL import Image
 import tempfile
 import pandas as pd
 
-model = YOLO("../training/weights/best.pt")
-# model = YOLO(r"C:\Users\zz-xy\OneDrive\Desktop\object detection\training\weights\best.pt")
+model = YOLO("training/weights/best.pt")
 
 def extract_classes(results):
     names = results[0].names
