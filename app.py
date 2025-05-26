@@ -6,10 +6,6 @@ import os
 from inference.img_detect import detect_img
 from inference.vid_detect import detect_vid
 
-# model = YOLO(r"C:\Users\zz-xy\OneDrive\Desktop\object detection\training\weights\best.pt")
-# model = YOLO(r"C:\Users\zz-xy\Downloads\best3.pt")
-# model = YOLO("training/weights/best.pt")
-
 st.set_page_config(page_title="YOLOv8 Object Detection", layout="centered")
 st.title("YOLOv8 Object Detection")
 
@@ -61,6 +57,12 @@ if uploaded_file:
         if video_bytes:
             st.subheader("Processed Video")
             st.video(io.BytesIO(video_bytes), format="video/mp4")
+            st.download_button(
+                label="Download Processed Video",
+                data=video_bytes,
+                file_name="detected_output.mp4",
+                mime="video/mp4"
+            )
         
         else:
             if not e_msg:
