@@ -31,8 +31,8 @@ def detect_vid(video_bytes, progress_callback=None):
             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = cap.get(cv2.CAP_PROP_FPS)
 
-            fourcc = cv2.VideoWriter_fourcc(*'avc1')
-            # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            # fourcc = cv2.VideoWriter_fourcc(*'avc1')
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
             out = cv2.VideoWriter(iop_path, fourcc, fps, (width, height))
             if not out.isOpened():
@@ -70,6 +70,14 @@ def detect_vid(video_bytes, progress_callback=None):
                     video_data = f.read()
             else:
                 raise RuntimeError(f"Processed video file '{iop_path}' was not created or is empty after processing.")
+            
+            ffmpeg.input(iop_path).output(final_out_path, vcodec="libx264", preset="medium").overwrite_output().run()
+
+            if os.path.exists(final_out_path) and os.path.getsize(final_out_path) > 0:
+                with open(final_out_path, "rb") as f:
+                    video_data = f.read()
+            else:
+                raise RuntimeError(f"Final MP4 video file '{final_out_path}' was not created or is empty after re-encoding. Check ffmpeg output or logs.")
             
             ffmpeg.input(iop_path).output(final_out_path, vcodec="libx264", preset="medium").overwrite_output().run()
 
