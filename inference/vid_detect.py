@@ -4,6 +4,7 @@ import tempfile
 import pandas as pd
 from ultralytics import YOLO
 import time
+import ffmpeg
 
 model = YOLO("training/weights/best.pt")
 
