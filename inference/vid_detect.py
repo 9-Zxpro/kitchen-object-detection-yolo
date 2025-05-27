@@ -3,13 +3,12 @@ import os
 import tempfile
 import pandas as pd
 from ultralytics import YOLO
-import ffmpeg
 import time
 
 model = YOLO("../training/weights/best.pt")
 
 def detect_vid(video_bytes, progress_callback=None):
-    iop_path = "iop.mp4"
+    # iop_path = "iop.mp4"
     final_out_path="output.mp4"
     input_video_path = None
     video_data = None
@@ -31,12 +30,11 @@ def detect_vid(video_bytes, progress_callback=None):
             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = cap.get(cv2.CAP_PROP_FPS)
 
-            fourcc = cv2.VideoWriter_fourcc(*'avc1')
+            fourcc = cv2.VideoWriter_fourcc(*'avc1') 
             # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-
-            out = cv2.VideoWriter(iop_path, fourcc, fps, (width, height))
+            out = cv2.VideoWriter(final_out_path, fourcc, fps, (width, height))
             if not out.isOpened():
-                raise RuntimeError(f"Could not initialize video writer for '{iop_path}' with FOURCC '{fourcc}'. This likely indicates a codec or FFMPEG configuration issue on the server.")
+                raise RuntimeError(f"Could not initialize video writer for '{final_out_path}' with FOURCC '{fourcc}'. This likely indicates a codec or FFMPEG configuration issue on the server.")
 
             all_detections = []
             frame_count = 0
@@ -65,19 +63,19 @@ def detect_vid(video_bytes, progress_callback=None):
             out.release()
             time.sleep(0.3)
                     
-            if os.path.exists(iop_path) and os.path.getsize(iop_path) > 0:
-                with open(iop_path, "rb") as f:
-                    video_data = f.read()
-            else:
-                raise RuntimeError(f"Processed video file '{iop_path}' was not created or is empty after processing.")
-            
-            ffmpeg.input(iop_path).output(final_out_path, vcodec="libx264", preset="medium").overwrite_output().run()
-
             if os.path.exists(final_out_path) and os.path.getsize(final_out_path) > 0:
                 with open(final_out_path, "rb") as f:
                     video_data = f.read()
             else:
-                raise RuntimeError(f"Final MP4 video file '{final_out_path}' was not created or is empty after re-encoding. Check ffmpeg output or logs.")
+                raise RuntimeError(f"Processed video file '{final_out_path}' was not created or is empty after processing.")
+            
+            # ffmpeg.input(iop_path).output(final_out_path, vcodec="libx264", preset="medium").overwrite_output().run()
+
+            # if os.path.exists(final_out_path) and os.path.getsize(final_out_path) > 0:
+            #     with open(final_out_path, "rb") as f:
+            #         video_data = f.read()
+            # else:
+            #     raise RuntimeError(f"Final MP4 video file '{final_out_path}' was not created or is empty after re-encoding. Check ffmpeg output or logs.")
             
             if all_detections:
                 df = pd.DataFrame(all_detections, columns=["Class","Confidence"])

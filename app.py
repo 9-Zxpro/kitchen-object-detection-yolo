@@ -6,10 +6,6 @@ import os
 from inference.img_detect import detect_img
 from inference.vid_detect import detect_vid
 
-# model = YOLO(r"C:\Users\zz-xy\OneDrive\Desktop\object detection\training\weights\best.pt")
-# model = YOLO(r"C:\Users\zz-xy\Downloads\best3.pt")
-# model = YOLO("training/weights/best.pt")
-
 st.set_page_config(page_title="YOLOv8 Object Detection", layout="centered")
 st.title("YOLOv8 Object Detection")
 
