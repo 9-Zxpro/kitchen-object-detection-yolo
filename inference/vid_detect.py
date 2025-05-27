@@ -65,7 +65,7 @@ def detect_vid(video_bytes, progress_callback=None):
             time.sleep(0.3)
                     
             if os.path.exists(iop_path) and os.path.getsize(iop_path) > 0:
-                with open(final_out_path, "rb") as f:
+                with open(iop_path, "rb") as f:
                     video_data = f.read()
             else:
                 raise RuntimeError(f"Processed video file '{iop_path}' was not created or is empty after processing.")
