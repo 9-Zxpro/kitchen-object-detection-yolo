@@ -57,6 +57,12 @@ if uploaded_file:
         if video_bytes:
             st.subheader("Processed Video")
             st.video(io.BytesIO(video_bytes), format="video/mp4")
+            # st.download_button(
+            #     label="Download Processed Video",
+            #     data=video_bytes,
+            #     file_name="detected_output.mp4",
+            #     mime="video/mp4"
+            # )
         
         else:
             if not e_msg:

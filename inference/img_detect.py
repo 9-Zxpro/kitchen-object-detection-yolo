@@ -3,7 +3,11 @@ from PIL import Image
 import tempfile
 import pandas as pd
 
+<<<<<<< HEAD
 model = YOLO("../training/weights/best.pt")
+=======
+model = YOLO("training/weights/best.pt")
+>>>>>>> af3349e2879066d9fbad694e76fdd6bdf91cc317
 
 def extract_classes(results):
     names = results[0].names

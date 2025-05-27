@@ -5,7 +5,7 @@ import pandas as pd
 from ultralytics import YOLO
 import time
 
-model = YOLO("../training/weights/best.pt")
+model = YOLO("training/weights/best.pt")
 
 def detect_vid(video_bytes, progress_callback=None):
     # iop_path = "iop.mp4"
@@ -30,9 +30,16 @@ def detect_vid(video_bytes, progress_callback=None):
             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = cap.get(cv2.CAP_PROP_FPS)
 
+<<<<<<< HEAD
             fourcc = cv2.VideoWriter_fourcc(*'avc1') 
             # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             out = cv2.VideoWriter(final_out_path, fourcc, fps, (width, height))
+=======
+            # fourcc = cv2.VideoWriter_fourcc(*'avc1')
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+
+            out = cv2.VideoWriter(iop_path, fourcc, fps, (width, height))
+>>>>>>> af3349e2879066d9fbad694e76fdd6bdf91cc317
             if not out.isOpened():
                 raise RuntimeError(f"Could not initialize video writer for '{final_out_path}' with FOURCC '{fourcc}'. This likely indicates a codec or FFMPEG configuration issue on the server.")
 
@@ -76,6 +83,14 @@ def detect_vid(video_bytes, progress_callback=None):
             #         video_data = f.read()
             # else:
             #     raise RuntimeError(f"Final MP4 video file '{final_out_path}' was not created or is empty after re-encoding. Check ffmpeg output or logs.")
+            
+            ffmpeg.input(iop_path).output(final_out_path, vcodec="libx264", preset="medium").overwrite_output().run()
+
+            if os.path.exists(final_out_path) and os.path.getsize(final_out_path) > 0:
+                with open(final_out_path, "rb") as f:
+                    video_data = f.read()
+            else:
+                raise RuntimeError(f"Final MP4 video file '{final_out_path}' was not created or is empty after re-encoding. Check ffmpeg output or logs.")
             
             if all_detections:
                 df = pd.DataFrame(all_detections, columns=["Class","Confidence"])
